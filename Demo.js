@@ -2,15 +2,42 @@ const express = require('express');
 const app = express();
 
 
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next(); 
-});
+function mw(req,res,next){
+  const age=req.query.age
+  if(age>=18)
+  {
+    next()
+  }
+ else{
+  res.json(
+    {
+      msg:"You are not eligible to get in the vote booth"
+    }
+  )
+  
+ }
+}
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+app.use(mw)
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+app.get("/booth1",function(req,res)
+{
+  res.json(
+    {
+      msg:"You entered the vote booth"
+    }
+  )
+})
+
+app.get("/booth2",function(req,res)
+{
+  res.json(
+    {
+      msg:"You entered the vote booth"
+    }
+  )
+})
+
+app.listen(3002, () => {
+  console.log("Server is running on port 3002");
 });
